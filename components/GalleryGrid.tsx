@@ -20,7 +20,7 @@ export function GalleryGrid({ items }: { items: GalleryItem[] }) {
             ease: [0.22, 1, 0.36, 1],
           }}
         >
-          <div className="relative overflow-hidden rounded-xl border border-zinc-800 bg-zinc-900/30 shadow-md transition-transform duration-500 group-hover:-translate-y-1 group-hover:shadow-violet-900/20">
+          <div className="relative overflow-hidden rounded-xl border border-stone-200 bg-white shadow-md transition-transform duration-500 group-hover:-translate-y-1 group-hover:shadow-stone-400/25 dark:border-stone-800 dark:bg-stone-900/30 dark:group-hover:shadow-amber-900/20">
             <Image
               src={item.src}
               alt={item.alt}
@@ -29,7 +29,7 @@ export function GalleryGrid({ items }: { items: GalleryItem[] }) {
               className="h-auto w-full object-cover transition duration-700 group-hover:scale-[1.02]"
             />
           </div>
-          <p className="text-sm leading-relaxed text-zinc-400">
+          <p className="text-sm leading-relaxed text-stone-600 dark:text-stone-400">
             {item.caption}
           </p>
         </motion.li>

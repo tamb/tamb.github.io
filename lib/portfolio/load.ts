@@ -162,8 +162,11 @@ function toPdfEmbed(
   itemDir: string,
 ): MusicEmbedItem {
   const name = m.filename ?? findMediaFilename(itemDir);
-  const lower = name?.toLowerCase();
-  if (!lower?.endsWith(".pdf")) {
+  if (
+    name === undefined ||
+    name === null ||
+    !name.toLowerCase().endsWith(".pdf")
+  ) {
     throw new Error(
       `Portfolio "${section}/${folder}" (pdf) needs media.pdf or a ".pdf" filename in manifest`,
     );

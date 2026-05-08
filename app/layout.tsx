@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { HumanVerificationOverlay } from "@/components/HumanVerificationOverlay";
+import { Providers } from "@/components/Providers";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SiteHeader } from "@/components/SiteHeader";
 import { siteMeta } from "@/lib/site-content";
@@ -19,7 +20,7 @@ const geistMono = Geist_Mono({
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#09090b",
+  themeColor: "#f4efe6",
 };
 
 export const metadata: Metadata = {
@@ -47,13 +48,16 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="flex min-h-full flex-col bg-zinc-950 font-sans text-zinc-100">
-        <SiteHeader />
-        <main className="flex min-h-0 flex-1 flex-col">{children}</main>
-        <SiteFooter />
-        <HumanVerificationOverlay />
+      <body className="flex min-h-full flex-col bg-background font-sans text-foreground">
+        <Providers>
+          <SiteHeader />
+          <main className="flex min-h-0 flex-1 flex-col">{children}</main>
+          <SiteFooter />
+          <HumanVerificationOverlay />
+        </Providers>
       </body>
     </html>
   );

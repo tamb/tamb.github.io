@@ -1,8 +1,47 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Light mode (default in :root when .dark is absent) */
 :root {
-  --background: #09090b;
-  --foreground: #fafafa;
+  --background: #f4efe6;
+  --foreground: #292524;
+  --human-verify-driver-w: 2.25rem;
+}
+
+.dark {
+  --background: #1c1917;
+  --foreground: #f5f0e8;
+}
+
+@keyframes human-verify-sweep-rtl {
+  from {
+    left: calc(100% - var(--human-verify-driver-w));
+  }
+  to {
+    left: 0;
+  }
+}
+
+@keyframes human-verify-sweep-ltr {
+  from {
+    left: 0;
+  }
+  to {
+    left: calc(100% - var(--human-verify-driver-w));
+  }
+}
+
+.human-verify-sweep-rtl {
+  animation-name: human-verify-sweep-rtl;
+  animation-timing-function: linear;
+  animation-fill-mode: both;
+}
+
+.human-verify-sweep-ltr {
+  animation-name: human-verify-sweep-ltr;
+  animation-timing-function: linear;
+  animation-fill-mode: both;
 }
 
 @theme inline {
@@ -23,5 +62,9 @@ body {
 }
 
 ::selection {
-  background: rgb(139 92 246 / 35%);
+  background: rgb(214 211 209 / 45%);
+}
+
+.dark ::selection {
+  background: rgb(217 119 6 / 35%);
 }

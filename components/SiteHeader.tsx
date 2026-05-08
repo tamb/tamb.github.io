@@ -3,6 +3,7 @@
 import { LayoutGroup, motion } from "framer-motion";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { tocadaUrl } from "@/lib/site-content";
 
 const mainNav: { href: string; label: string }[] = [
@@ -18,16 +19,16 @@ export function SiteHeader() {
   const pathname = usePathname() || "/";
 
   return (
-    <header className="sticky top-0 z-40 border-b border-zinc-800/80 bg-zinc-950/80 backdrop-blur-md">
+    <header className="sticky top-0 z-40 border-b border-stone-200/80 bg-stone-100/85 backdrop-blur-md dark:border-stone-800/80 dark:bg-stone-950/80">
       <div className="mx-auto flex max-w-6xl flex-col gap-3 px-4 py-4 sm:flex-row sm:items-center sm:justify-between">
         <Link
           href="/"
-          className="group inline-flex items-baseline gap-2 text-lg font-semibold tracking-tight text-zinc-50 transition-colors hover:text-violet-200"
+          className="group inline-flex items-baseline gap-2 text-lg font-semibold tracking-tight text-stone-900 transition-colors hover:text-amber-600 dark:text-stone-50 dark:hover:text-amber-200"
         >
-          <span className="rounded-md bg-violet-600/20 px-2 py-0.5 text-xs font-bold uppercase tracking-wider text-violet-300">
+          <span className="rounded-md bg-amber-900/40 px-2 py-0.5 text-xs font-bold uppercase tracking-wider text-amber-200/95 ring-1 ring-amber-600/30">
             tamb
           </span>
-          <span className="text-zinc-400 group-hover:text-zinc-200">
+          <span className="text-stone-600 group-hover:text-stone-800 dark:text-stone-400 dark:group-hover:text-stone-200">
             portfolio
           </span>
         </Link>
@@ -48,15 +49,15 @@ export function SiteHeader() {
                   href={href}
                   className={`relative rounded-md px-2.5 py-1.5 transition-colors ${
                     active
-                      ? "text-violet-200"
-                      : "text-zinc-400 hover:text-zinc-100"
+                      ? "text-amber-900 dark:text-amber-200"
+                      : "text-stone-600 hover:text-stone-900 dark:text-stone-400 dark:hover:text-stone-100"
                   }`}
                 >
                   {label}
                   {active ? (
                     <motion.span
                       layoutId="nav-pill"
-                      className="absolute inset-0 -z-10 rounded-md bg-violet-500/15 ring-1 ring-violet-400/30"
+                      className="absolute inset-0 -z-10 rounded-md bg-amber-500/15 ring-1 ring-amber-400/30"
                       transition={{
                         type: "spring",
                         stiffness: 380,
@@ -71,10 +72,11 @@ export function SiteHeader() {
               href={tocadaUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="rounded-md px-2.5 py-1.5 text-zinc-400 transition-colors hover:text-emerald-300"
+              className="rounded-md px-2.5 py-1.5 text-stone-600 transition-colors hover:text-emerald-700 dark:text-stone-400 dark:hover:text-emerald-400"
             >
               Open source ↗
             </a>
+            <ThemeToggle />
           </nav>
         </LayoutGroup>
       </div>

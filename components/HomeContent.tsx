@@ -30,25 +30,25 @@ export function HomeContent({
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
       >
-        <p className="text-xs font-semibold uppercase tracking-[0.25em] text-violet-400/90">
+        <p className="text-xs font-semibold uppercase tracking-[0.25em] text-amber-400/90">
           {siteMeta.personName}
         </p>
-        <h1 className="max-w-3xl text-4xl font-semibold tracking-tight text-zinc-50 sm:text-5xl">
+        <h1 className="max-w-3xl text-4xl font-semibold tracking-tight text-stone-900 dark:text-stone-50 sm:text-5xl">
           {siteMeta.tagline}
         </h1>
-        <p className="max-w-2xl text-lg leading-relaxed text-zinc-400">
+        <p className="max-w-2xl text-lg leading-relaxed text-stone-600 dark:text-stone-400">
           {siteMeta.description}
         </p>
         <div className="flex flex-wrap gap-3 pt-2">
           <Link
             href="/portfolio/music/"
-            className="rounded-full bg-violet-600 px-5 py-2.5 text-sm font-medium text-white shadow-lg shadow-violet-900/40 transition hover:bg-violet-500"
+            className="rounded-full bg-amber-700 px-5 py-2.5 text-sm font-semibold text-amber-50 shadow-md shadow-amber-950/25 ring-1 ring-amber-500/40 transition hover:bg-amber-600 dark:shadow-amber-950/40"
           >
             Listen
           </Link>
           <Link
             href="/about/resume/"
-            className="rounded-full border border-zinc-700 bg-zinc-900/50 px-5 py-2.5 text-sm font-medium text-zinc-200 transition hover:border-zinc-500 hover:bg-zinc-800/50"
+            className="rounded-full border border-stone-300 bg-white/80 px-5 py-2.5 text-sm font-medium text-stone-800 transition hover:border-stone-400 hover:bg-stone-50 dark:border-stone-700 dark:bg-stone-900/50 dark:text-stone-200 dark:hover:border-stone-500 dark:hover:bg-stone-800/50"
           >
             View resume
           </Link>
@@ -56,7 +56,7 @@ export function HomeContent({
             href={openSourceUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="rounded-full border border-emerald-900/60 bg-emerald-950/30 px-5 py-2.5 text-sm font-medium text-emerald-200/90 transition hover:border-emerald-600/60"
+            className="rounded-full border border-emerald-700/40 bg-emerald-100/80 px-5 py-2.5 text-sm font-medium text-emerald-950 transition hover:border-emerald-600/60 hover:bg-emerald-100 dark:border-emerald-800/45 dark:bg-emerald-950/45 dark:text-emerald-100/95 dark:hover:border-emerald-700/50 dark:hover:bg-emerald-950/60"
           >
             Open source (tocada) ↗
           </a>
@@ -64,10 +64,10 @@ export function HomeContent({
       </motion.section>
 
       <section className="mb-20">
-        <h2 className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-zinc-500">
+        <h2 className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-stone-600 dark:text-stone-500">
           Work & demos
         </h2>
-        <p className="mb-8 max-w-2xl text-zinc-400">
+        <p className="mb-8 max-w-2xl text-stone-600 dark:text-stone-400">
           Replace the samples with companies you are proud to showcase — product
           tours, archived marketing builds, or anonymized case studies.
         </p>
@@ -76,39 +76,39 @@ export function HomeContent({
 
       <section className="mb-20 grid gap-10 md:grid-cols-2">
         <div>
-          <h2 className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-zinc-500">
+          <h2 className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-stone-600 dark:text-stone-500">
             Studios
           </h2>
-          <ul className="space-y-3 text-zinc-300">
+          <ul className="space-y-3 text-stone-800 dark:text-stone-300">
             <li>
               <Link
-                className="group flex items-center justify-between rounded-xl border border-zinc-800 bg-zinc-900/30 px-4 py-3 transition hover:border-violet-500/40"
+                className="group flex items-center justify-between rounded-xl border border-stone-200 bg-white/70 px-4 py-3 transition hover:border-amber-400/55 dark:border-stone-800 dark:bg-stone-900/30 dark:hover:border-amber-500/40"
                 href="/portfolio/drawings/"
               >
                 <span>Drawings</span>
-                <span className="text-zinc-500 transition group-hover:translate-x-0.5 group-hover:text-violet-300">
+                <span className="text-stone-500 transition group-hover:translate-x-0.5 group-hover:text-amber-300">
                   →
                 </span>
               </Link>
             </li>
             <li>
               <Link
-                className="group flex items-center justify-between rounded-xl border border-zinc-800 bg-zinc-900/30 px-4 py-3 transition hover:border-violet-500/40"
+                className="group flex items-center justify-between rounded-xl border border-stone-200 bg-white/70 px-4 py-3 transition hover:border-amber-400/55 dark:border-stone-800 dark:bg-stone-900/30 dark:hover:border-amber-500/40"
                 href="/portfolio/photography/"
               >
                 <span>Photography</span>
-                <span className="text-zinc-500 transition group-hover:translate-x-0.5 group-hover:text-violet-300">
+                <span className="text-stone-500 transition group-hover:translate-x-0.5 group-hover:text-amber-300">
                   →
                 </span>
               </Link>
             </li>
             <li>
               <Link
-                className="group flex items-center justify-between rounded-xl border border-zinc-800 bg-zinc-900/30 px-4 py-3 transition hover:border-violet-500/40"
+                className="group flex items-center justify-between rounded-xl border border-stone-200 bg-white/70 px-4 py-3 transition hover:border-amber-400/55 dark:border-stone-800 dark:bg-stone-900/30 dark:hover:border-amber-500/40"
                 href="/portfolio/music/"
               >
                 <span>Music & SoundCloud</span>
-                <span className="text-zinc-500 transition group-hover:translate-x-0.5 group-hover:text-violet-300">
+                <span className="text-stone-500 transition group-hover:translate-x-0.5 group-hover:text-amber-300">
                   →
                 </span>
               </Link>
@@ -116,7 +116,7 @@ export function HomeContent({
           </ul>
         </div>
         <div>
-          <h2 className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-zinc-500">
+          <h2 className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-stone-600 dark:text-stone-500">
             Play
           </h2>
           <ul className="space-y-3">
@@ -124,10 +124,12 @@ export function HomeContent({
               <li key={g.slug}>
                 <Link
                   href={`/games/${g.slug}/`}
-                  className="group flex items-center justify-between rounded-xl border border-zinc-800 bg-zinc-900/30 px-4 py-3 transition hover:border-fuchsia-500/40"
+                  className="group flex items-center justify-between rounded-xl border border-stone-200 bg-white/70 px-4 py-3 transition hover:border-amber-400/55 dark:border-stone-800 dark:bg-stone-900/30 dark:hover:border-amber-500/40"
                 >
-                  <span className="text-zinc-200">{g.title}</span>
-                  <span className="text-xs uppercase tracking-wider text-zinc-500 group-hover:text-fuchsia-300">
+                  <span className="text-stone-900 dark:text-stone-200">
+                    {g.title}
+                  </span>
+                  <span className="text-xs uppercase tracking-wider text-stone-500 group-hover:text-amber-300">
                     {g.status === "live" ? "Play" : "Soon"}
                   </span>
                 </Link>
@@ -136,7 +138,7 @@ export function HomeContent({
           </ul>
           <Link
             href="/games/"
-            className="mt-4 inline-block text-sm font-medium text-fuchsia-300/90 underline-offset-4 hover:underline"
+            className="mt-4 inline-block text-sm font-medium text-amber-400 underline-offset-4 hover:underline"
           >
             All games
           </Link>

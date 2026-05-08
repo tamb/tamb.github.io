@@ -30,20 +30,20 @@ export function PortfolioEmbedBlock(props: PortfolioEmbedBlockProps) {
 
   return (
     <motion.figure
-      className="overflow-hidden rounded-xl border border-zinc-800 bg-zinc-900/40 shadow-lg shadow-violet-950/10"
+      className="overflow-hidden rounded-xl border border-stone-200 bg-stone-50/90 shadow-lg shadow-stone-400/12 dark:border-stone-800 dark:bg-stone-900/40 dark:shadow-amber-950/10"
       initial={{ opacity: 0, y: 10 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-40px" }}
       transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
     >
-      <figcaption className="border-b border-zinc-800 px-4 py-3 text-sm font-medium text-zinc-200">
+      <figcaption className="border-b border-stone-200 px-4 py-3 text-sm font-medium text-stone-900 dark:border-stone-800 dark:text-stone-200">
         {props.title}
       </figcaption>
       {props.kind === "pdf" ? (
         <iframe
           title={`PDF: ${props.title}`}
           src={`${props.src}#view=FitH`}
-          className="h-[min(70vh,36rem)] w-full border-0 bg-zinc-900"
+          className="h-[min(70vh,36rem)] w-full border-0 bg-stone-100 dark:bg-stone-900"
         />
       ) : (
         <iframe
@@ -52,7 +52,7 @@ export function PortfolioEmbedBlock(props: PortfolioEmbedBlockProps) {
               ? `SoundCloud: ${props.title}`
               : props.title
           }
-          className="w-full border-0 bg-zinc-900"
+          className="w-full border-0 bg-stone-100 dark:bg-stone-900"
           style={
             frameHeight !== undefined ? { height: frameHeight } : undefined
           }
