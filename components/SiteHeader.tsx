@@ -4,7 +4,6 @@ import { LayoutGroup, motion } from "framer-motion";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import { tocadaUrl } from "@/lib/site-content";
 
 const mainNav: { href: string; label: string }[] = [
   { href: "/", label: "Home" },
@@ -68,14 +67,12 @@ export function SiteHeader() {
                 </Link>
               );
             })}
-            <a
-              href={tocadaUrl}
-              target="_blank"
-              rel="noopener noreferrer"
+            <Link
+              href="/#open-source"
               className="rounded-md px-2.5 py-1.5 text-stone-600 transition-colors hover:text-emerald-700 dark:text-stone-400 dark:hover:text-emerald-400"
             >
-              Open source ↗
-            </a>
+              Open source
+            </Link>
             <ThemeToggle />
           </nav>
         </LayoutGroup>

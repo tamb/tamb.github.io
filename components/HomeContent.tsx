@@ -3,7 +3,11 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { CompanyDemoCards } from "@/components/CompanyDemoCards";
-import type { CompanyDemo, HostedGame } from "@/lib/site-content";
+import type {
+  CompanyDemo,
+  HostedGame,
+  OpenSourceProject,
+} from "@/lib/site-content";
 
 type Site = {
   personName: string;
@@ -15,12 +19,12 @@ export function HomeContent({
   siteMeta,
   companyDemos: demos,
   games,
-  tocadaUrl: openSourceUrl,
+  openSourceProjects,
 }: {
   siteMeta: Site;
   companyDemos: CompanyDemo[];
   games: HostedGame[];
-  tocadaUrl: string;
+  openSourceProjects: OpenSourceProject[];
 }) {
   return (
     <div className="mx-auto max-w-6xl flex-1 px-4 py-14 sm:py-20">
@@ -52,16 +56,49 @@ export function HomeContent({
           >
             View resume
           </Link>
-          <a
-            href={openSourceUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="rounded-full border border-emerald-700/40 bg-emerald-100/80 px-5 py-2.5 text-sm font-medium text-emerald-950 transition hover:border-emerald-600/60 hover:bg-emerald-100 dark:border-emerald-800/45 dark:bg-emerald-950/45 dark:text-emerald-100/95 dark:hover:border-emerald-700/50 dark:hover:bg-emerald-950/60"
-          >
-            Open source (tocada) ↗
-          </a>
         </div>
       </motion.section>
+
+      <section
+        id="open-source"
+        className="mb-20 scroll-mt-24"
+        aria-labelledby="open-source-heading"
+      >
+        <h2
+          id="open-source-heading"
+          className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-stone-600 dark:text-stone-500"
+        >
+          Open source
+        </h2>
+        <p className="mb-8 max-w-2xl text-stone-600 dark:text-stone-400">
+          Repositories I maintain or contribute to — each row opens the GitHub
+          project.
+        </p>
+        <ul className="space-y-3">
+          {openSourceProjects.map((p) => (
+            <li key={p.repoUrl}>
+              <a
+                href={p.repoUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex flex-col gap-1 rounded-xl border border-stone-200 bg-white/70 px-4 py-3 transition hover:border-emerald-500/45 hover:shadow-md hover:shadow-emerald-900/10 sm:flex-row sm:items-center sm:justify-between dark:border-stone-800 dark:bg-stone-900/30 dark:hover:border-emerald-600/35 dark:hover:shadow-emerald-950/15"
+              >
+                <div>
+                  <span className="font-medium text-stone-900 dark:text-stone-100">
+                    {p.name}
+                  </span>
+                  <p className="mt-0.5 text-sm text-stone-600 dark:text-stone-400">
+                    {p.description}
+                  </p>
+                </div>
+                <span className="shrink-0 text-sm font-medium text-emerald-700 transition group-hover:text-emerald-600 dark:text-emerald-400 dark:group-hover:text-emerald-300">
+                  Repository ↗
+                </span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
 
       <section className="mb-20">
         <h2 className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-stone-600 dark:text-stone-500">

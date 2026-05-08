@@ -14,8 +14,34 @@ export const siteMeta = {
     "Personal portfolio: open source, employers, music, photography, drawings, and playable experiments.",
 };
 
-/** GitHub Pages site for open-source work */
-export const tocadaUrl = "https://tamb.github.io/tocada";
+export type OpenSourceProject = {
+  /** Display name (often matches the repo) */
+  name: string;
+  /** One line for the list; keep it short */
+  description: string;
+  /** GitHub repository URL */
+  repoUrl: string;
+};
+
+/** Public repos you want featured on the home page and footer */
+export const openSourceProjects: OpenSourceProject[] = [
+  {
+    name: "tocada",
+    description: "Your project — edit this line and the repo URL below.",
+    repoUrl: "https://github.com/tamb/tocada",
+  },
+  {
+    name: "simple-mcp-manager",
+    description:
+      "MCP server manager: TUI and web UI to monitor, restart, and kill servers across Cursor, VS Code, Claude, Copilot, and more.",
+    repoUrl: "https://github.com/tamb/simple-mcp-manager",
+  },
+  {
+    name: "tamb.github.io",
+    description: "This portfolio: Next.js static export for GitHub Pages.",
+    repoUrl: "https://github.com/tamb/tamb.github.io",
+  },
+];
 
 export type GalleryItem = {
   src: string;

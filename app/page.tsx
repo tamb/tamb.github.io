@@ -2,8 +2,8 @@ import { HomeContent } from "@/components/HomeContent";
 import {
   companyDemos,
   hostedGames,
+  openSourceProjects,
   siteMeta,
-  tocadaUrl,
 } from "@/lib/site-content";
 
 export default function HomePage() {
@@ -12,7 +12,7 @@ export default function HomePage() {
       siteMeta={siteMeta}
       companyDemos={companyDemos}
       games={hostedGames}
-      tocadaUrl={tocadaUrl}
+      openSourceProjects={openSourceProjects}
     />
   );
 }

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { siteMeta, tocadaUrl } from "@/lib/site-content";
+import { openSourceProjects, siteMeta } from "@/lib/site-content";
 
 export function SiteFooter() {
   const year = new Date().getFullYear();
@@ -20,27 +20,40 @@ export function SiteFooter() {
             .
           </p>
         </div>
-        <div className="flex flex-wrap gap-4 text-sm text-stone-600 dark:text-stone-400">
-          <Link
-            className="hover:text-stone-900 dark:hover:text-stone-100"
-            href="/about/resume/"
-          >
-            Resume
-          </Link>
-          <Link
-            className="hover:text-stone-900 dark:hover:text-stone-100"
-            href="/games/"
-          >
-            Games
-          </Link>
-          <a
-            className="hover:text-emerald-700 dark:hover:text-emerald-400"
-            href={tocadaUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            tocada
-          </a>
+        <div className="flex flex-col gap-3 text-sm text-stone-600 sm:items-end dark:text-stone-400">
+          <div className="flex flex-wrap gap-4">
+            <Link
+              className="hover:text-stone-900 dark:hover:text-stone-100"
+              href="/about/resume/"
+            >
+              Resume
+            </Link>
+            <Link
+              className="hover:text-stone-900 dark:hover:text-stone-100"
+              href="/games/"
+            >
+              Games
+            </Link>
+            <Link
+              className="hover:text-emerald-700 dark:hover:text-emerald-400"
+              href="/#open-source"
+            >
+              Open source
+            </Link>
+          </div>
+          <div className="flex max-w-md flex-wrap justify-end gap-x-3 gap-y-1">
+            {openSourceProjects.map((p) => (
+              <a
+                key={p.repoUrl}
+                className="text-stone-500 hover:text-emerald-700 hover:underline dark:text-stone-500 dark:hover:text-emerald-400"
+                href={p.repoUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {p.name} ↗
+              </a>
+            ))}
+          </div>
         </div>
       </div>
     </footer>
