@@ -1,0 +1,13 @@
+{
+  "type": "open-source",
+  "order": 5,
+  "title": "@tamb/gamecontroller",
+  "description": "Lit Web Component for a Game Boy–style virtual controller: d-pad or joystick, face buttons, theming via CSS variables in the shadow root.",
+  "links": [
+    {
+      "label": "Repository",
+      "href": "https://github.com/tamb/game-controller"
+    },
+    { "label": "Site", "href": "https://tamb.github.io/game-controller/" }
+  ]
+}
