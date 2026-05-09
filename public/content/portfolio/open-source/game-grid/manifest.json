@@ -1,0 +1,10 @@
+{
+  "type": "open-source",
+  "order": 4,
+  "title": "@tamb/gamegrid",
+  "description": "JavaScript and optional HTML implementation of a 2D grid for making games.",
+  "links": [
+    { "label": "Repository", "href": "https://github.com/tamb/game-grid" },
+    { "label": "Site", "href": "https://tamb.github.io/game-grid/" }
+  ]
+}
