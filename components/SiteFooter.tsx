@@ -1,8 +1,11 @@
 import Link from "next/link";
-import { openSourceProjects, siteMeta } from "@/lib/site-content";
+import { loadProjectSection } from "@/lib/portfolio/load";
+import { siteMeta } from "@/lib/site-content";
 
 export function SiteFooter() {
   const year = new Date().getFullYear();
+  const openSourceProjects = loadProjectSection("open-source");
+
   return (
     <footer className="mt-auto border-t border-stone-200/80 bg-stone-100/60 dark:border-stone-800/80 dark:bg-stone-950/50">
       <div className="mx-auto flex max-w-6xl flex-col gap-6 px-4 py-10 sm:flex-row sm:items-center sm:justify-between">
@@ -36,23 +39,37 @@ export function SiteFooter() {
             </Link>
             <Link
               className="hover:text-emerald-700 dark:hover:text-emerald-400"
-              href="/#open-source"
+              href="/portfolio/open-source/"
             >
               Open source
             </Link>
           </div>
           <div className="flex max-w-md flex-wrap justify-end gap-x-3 gap-y-1">
-            {openSourceProjects.map((p) => (
-              <a
-                key={p.repoUrl}
-                className="text-stone-500 hover:text-emerald-700 hover:underline dark:text-stone-500 dark:hover:text-emerald-400"
-                href={p.repoUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {p.name} ↗
-              </a>
-            ))}
+            {openSourceProjects.map((p) => {
+              const primary = p.links[0];
+              if (primary) {
+                return (
+                  <a
+                    key={p.folder}
+                    className="text-stone-500 hover:text-emerald-700 hover:underline dark:text-stone-500 dark:hover:text-emerald-400"
+                    href={primary.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {p.title} ↗
+                  </a>
+                );
+              }
+              return (
+                <Link
+                  key={p.folder}
+                  className="text-stone-500 hover:text-emerald-700 hover:underline dark:text-stone-500 dark:hover:text-emerald-400"
+                  href="/portfolio/open-source/"
+                >
+                  {p.title}
+                </Link>
+              );
+            })}
           </div>
         </div>
       </div>

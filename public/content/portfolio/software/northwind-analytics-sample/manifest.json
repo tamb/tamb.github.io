@@ -1,0 +1,10 @@
+{
+  "type": "software",
+  "order": 1,
+  "title": "Northwind analytics cockpit (sample)",
+  "description": "Placeholder row — swap for shipped tools you can name on the record.",
+  "links": [
+    { "label": "Public recap", "href": "https://example.com" },
+    { "label": "Product tour", "href": "https://example.com" }
+  ]
+}

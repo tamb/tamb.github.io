@@ -31,11 +31,19 @@ export default function DrawingsPage() {
           <code className="text-stone-800 dark:text-stone-300">
             type: &quot;image&quot;
           </code>
-          ) and a{" "}
+          ) and one or more{" "}
+          <code className="text-stone-800 dark:text-stone-300">
+            NN.media.&lt;ext&gt;
+          </code>{" "}
+          files (e.g.{" "}
+          <code className="text-stone-800 dark:text-stone-300">
+            00.media.svg
+          </code>
+          ), or legacy{" "}
           <code className="text-stone-800 dark:text-stone-300">
             media.&lt;ext&gt;
-          </code>{" "}
-          file.
+          </code>
+          .
         </p>
       </header>
       <GalleryGrid items={items} />

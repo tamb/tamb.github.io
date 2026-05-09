@@ -1,4 +1,4 @@
-import type { GalleryItem } from "@/lib/site-content";
+import type { GalleryItem, PortfolioLink } from "@/lib/site-content";
 
 export type ParsedImageManifest = {
   type: "image";
@@ -26,15 +26,39 @@ export type ParsedPdfManifest = {
   type: "pdf";
   order?: number;
   title: string;
-  /** If omitted, `media.pdf` in the same folder is used. */
+  /** If omitted, the first `*.pdf` matching `NN.media.ext` or legacy `media.*` is used. */
   filename?: string;
+};
+
+/** Same shape as software projects; discriminated by `type` for the portfolio section */
+export type ParsedOpenSourceManifest = {
+  type: "open-source";
+  order?: number;
+  title: string;
+  description: string;
+  links: PortfolioLink[];
+  /** Required when the folder contains image media (`NN.media.ext`) */
+  alt?: string;
+  caption?: string;
+};
+
+export type ParsedSoftwareManifest = {
+  type: "software";
+  order?: number;
+  title: string;
+  description: string;
+  links: PortfolioLink[];
+  alt?: string;
+  caption?: string;
 };
 
 export type ParsedPortfolioManifest =
   | ParsedImageManifest
   | ParsedSoundcloudManifest
   | ParsedIframeManifest
-  | ParsedPdfManifest;
+  | ParsedPdfManifest
+  | ParsedOpenSourceManifest
+  | ParsedSoftwareManifest;
 
 function isRecord(x: unknown): x is Record<string, unknown> {
   return typeof x === "object" && x !== null && !Array.isArray(x);
@@ -130,6 +154,86 @@ function parsePdf(rec: Record<string, unknown>): ParsedPdfManifest {
   };
 }
 
+function parseLinkDefinitions(
+  raw: unknown,
+  fieldName: string,
+): PortfolioLink[] {
+  if (!Array.isArray(raw)) {
+    throw new Error(`${fieldName} must be an array of link objects`);
+  }
+  return raw.map((entry, i) => {
+    if (!isRecord(entry)) {
+      throw new Error(`${fieldName}[${i}] must be an object`);
+    }
+    const label = entry.label;
+    const href = entry.href;
+    if (typeof label !== "string" || typeof href !== "string") {
+      throw new Error(
+        `${fieldName}[${i}] requires string "label" and string "href"`,
+      );
+    }
+    return { label, href };
+  });
+}
+
+function readOptionalString(
+  rec: Record<string, unknown>,
+  key: string,
+): string | undefined {
+  const v = rec[key];
+  if (v === undefined || v === null) return undefined;
+  if (typeof v !== "string") {
+    throw new Error(`${key} must be a string when set`);
+  }
+  return v;
+}
+
+function parseOpenSource(
+  rec: Record<string, unknown>,
+): ParsedOpenSourceManifest {
+  const title = rec.title;
+  const description = rec.description;
+  if (typeof title !== "string" || typeof description !== "string") {
+    throw new Error(
+      'open-source manifest requires string "title" and "description"',
+    );
+  }
+  const links = parseLinkDefinitions(rec.links, "links");
+  const alt = readOptionalString(rec, "alt");
+  const caption = readOptionalString(rec, "caption");
+  return {
+    type: "open-source",
+    order: readOrder(rec),
+    title,
+    description,
+    links,
+    alt,
+    caption,
+  };
+}
+
+function parseSoftware(rec: Record<string, unknown>): ParsedSoftwareManifest {
+  const title = rec.title;
+  const description = rec.description;
+  if (typeof title !== "string" || typeof description !== "string") {
+    throw new Error(
+      'software manifest requires string "title" and "description"',
+    );
+  }
+  const links = parseLinkDefinitions(rec.links, "links");
+  const alt = readOptionalString(rec, "alt");
+  const caption = readOptionalString(rec, "caption");
+  return {
+    type: "software",
+    order: readOrder(rec),
+    title,
+    description,
+    links,
+    alt,
+    caption,
+  };
+}
+
 export function parsePortfolioManifest(json: unknown): ParsedPortfolioManifest {
   if (!isRecord(json)) {
     throw new Error("Manifest must be a JSON object");
@@ -139,16 +243,22 @@ export function parsePortfolioManifest(json: unknown): ParsedPortfolioManifest {
   if (t === "soundcloud") return parseSoundcloud(json);
   if (t === "iframe") return parseIframe(json);
   if (t === "pdf") return parsePdf(json);
+  if (t === "open-source") return parseOpenSource(json);
+  if (t === "software") return parseSoftware(json);
   throw new Error(
-    `Unknown manifest type: ${String(t)}. Use image | soundcloud | iframe | pdf.`,
+    `Unknown manifest type: ${String(t)}. Use image | soundcloud | iframe | pdf | open-source | software.`,
   );
 }
 
 export function imageManifestToGalleryItem(
   publicBasePath: string,
-  mediaName: string,
+  mediaFilenames: string[],
   manifest: ParsedImageManifest,
 ): GalleryItem {
-  const src = `${publicBasePath}/${mediaName}`;
-  return { src, alt: manifest.alt, caption: manifest.caption };
+  const images = mediaFilenames.map((name, i) => ({
+    src: `${publicBasePath}/${name}`,
+    alt:
+      mediaFilenames.length > 1 ? `${manifest.alt} (${i + 1})` : manifest.alt,
+  }));
+  return { images, caption: manifest.caption };
 }

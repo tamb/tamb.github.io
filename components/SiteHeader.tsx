@@ -8,6 +8,8 @@ import { ThemeToggle } from "@/components/ThemeToggle";
 const mainNav: { href: string; label: string }[] = [
   { href: "/", label: "Home" },
   { href: "/about/resume/", label: "Resume" },
+  { href: "/portfolio/open-source/", label: "Open source" },
+  { href: "/portfolio/software/", label: "Software" },
   { href: "/portfolio/drawings/", label: "Drawings" },
   { href: "/portfolio/music/", label: "Music" },
   { href: "/portfolio/photography/", label: "Photography" },
@@ -67,12 +69,6 @@ export function SiteHeader() {
                 </Link>
               );
             })}
-            <Link
-              href="/#open-source"
-              className="rounded-md px-2.5 py-1.5 text-stone-600 transition-colors hover:text-emerald-700 dark:text-stone-400 dark:hover:text-emerald-400"
-            >
-              Open source
-            </Link>
             <ThemeToggle />
           </nav>
         </LayoutGroup>

@@ -40,6 +40,10 @@ export default function MusicPage() {
             type: &quot;pdf&quot;
           </code>{" "}
           (with{" "}
+          <code className="text-stone-800 dark:text-stone-300">
+            00.media.pdf
+          </code>{" "}
+          /{" "}
           <code className="text-stone-800 dark:text-stone-300">media.pdf</code>
           ).
         </p>

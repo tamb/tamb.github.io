@@ -2,5 +2,5 @@
   "type": "image",
   "order": 1,
   "alt": "Abstract line study (placeholder)",
-  "caption": "Ink study — replace with your file in this folder as media.<ext>"
+  "caption": "Ink study — add raster or SVG files as 00.media.<ext>, 01.media.<ext>, …"
 }

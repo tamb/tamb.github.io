@@ -1,6 +1,6 @@
 /**
  * Central place for site meta, external URLs, and non-portfolio copy.
- * Portfolio media (drawings, photography, music embeds) lives in
+ * Portfolio content (drawings, photography, music, open source, software) lives in
  * `public/content/portfolio/<section>/<item-folder>/` — see `lib/portfolio/load.ts`.
  */
 
@@ -14,38 +14,27 @@ export const siteMeta = {
     "Personal portfolio: open source, employers, music, photography, drawings, and playable experiments.",
 };
 
-export type OpenSourceProject = {
-  /** Display name (often matches the repo) */
-  name: string;
-  /** One line for the list; keep it short */
-  description: string;
-  /** GitHub repository URL */
-  repoUrl: string;
+/** External link attached to a portfolio project (repo, docs, demo, …) */
+export type PortfolioLink = {
+  label: string;
+  href: string;
 };
 
-/** Public repos you want featured on the home page and footer */
-export const openSourceProjects: OpenSourceProject[] = [
-  {
-    name: "tocada",
-    description: "Your project — edit this line and the repo URL below.",
-    repoUrl: "https://github.com/tamb/tocada",
-  },
-  {
-    name: "simple-mcp-manager",
-    description:
-      "MCP server manager: TUI and web UI to monitor, restart, and kill servers across Cursor, VS Code, Claude, Copilot, and more.",
-    repoUrl: "https://github.com/tamb/simple-mcp-manager",
-  },
-  {
-    name: "tamb.github.io",
-    description: "This portfolio: Next.js static export for GitHub Pages.",
-    repoUrl: "https://github.com/tamb/tamb.github.io",
-  },
-];
+/** Open-source / software rows loaded from `public/content/portfolio/<section>/` */
+export type PortfolioProjectItem = {
+  folder: string;
+  title: string;
+  description: string;
+  links: PortfolioLink[];
+  images: { src: string; alt: string }[];
+  /** Optional note shown under images (manifest `caption`) */
+  imageCaption?: string;
+};
+
+export type GalleryImage = { src: string; alt: string };
 
 export type GalleryItem = {
-  src: string;
-  alt: string;
+  images: GalleryImage[];
   caption: string;
 };
 

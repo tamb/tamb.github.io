@@ -1,12 +1,10 @@
 import { HomeContent } from "@/components/HomeContent";
-import {
-  companyDemos,
-  hostedGames,
-  openSourceProjects,
-  siteMeta,
-} from "@/lib/site-content";
+import { loadProjectSection } from "@/lib/portfolio/load";
+import { companyDemos, hostedGames, siteMeta } from "@/lib/site-content";
 
 export default function HomePage() {
+  const openSourceProjects = loadProjectSection("open-source");
+
   return (
     <HomeContent
       siteMeta={siteMeta}

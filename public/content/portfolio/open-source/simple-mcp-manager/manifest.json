@@ -1,0 +1,12 @@
+{
+  "type": "open-source",
+  "order": 2,
+  "title": "simple-mcp-manager",
+  "description": "MCP server manager: TUI and web UI to monitor, restart, and kill servers across Cursor, VS Code, Claude, Copilot, and more.",
+  "links": [
+    {
+      "label": "Repository",
+      "href": "https://github.com/tamb/simple-mcp-manager"
+    }
+  ]
+}

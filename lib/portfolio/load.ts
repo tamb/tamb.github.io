@@ -1,16 +1,28 @@
 import fs from "node:fs";
 import path from "node:path";
-import type { GalleryItem } from "@/lib/site-content";
+import type { GalleryItem, PortfolioProjectItem } from "@/lib/site-content";
 import {
   imageManifestToGalleryItem,
   type ParsedIframeManifest,
+  type ParsedOpenSourceManifest,
   type ParsedPdfManifest,
   type ParsedPortfolioManifest,
+  type ParsedSoftwareManifest,
   type ParsedSoundcloudManifest,
   parsePortfolioManifest,
 } from "./manifest";
 
-export type PortfolioSection = "drawings" | "photography" | "music";
+export type PortfolioSection =
+  | "drawings"
+  | "photography"
+  | "music"
+  | "open-source"
+  | "software";
+
+/** `00.media.png`, `01.media.jpg`, … — sorted by numeric prefix */
+const NUMBERED_MEDIA_RE = /^(\d+)\.media\./i;
+/** Legacy single file `media.<ext>` */
+const LEGACY_MEDIA_RE = /^media\./i;
 
 function portfolioRoot(): string {
   return path.join(
@@ -25,8 +37,6 @@ function portfolioRoot(): string {
 function sectionDir(section: PortfolioSection): string {
   return path.join(portfolioRoot(), section);
 }
-
-const MEDIA_RE = /^media\./i;
 
 function listItemDirs(section: PortfolioSection): string[] {
   const base = sectionDir(section);
@@ -45,10 +55,28 @@ function readManifestFile(dir: string): ParsedPortfolioManifest {
   return parsePortfolioManifest(data);
 }
 
-function findMediaFilename(itemDir: string): string | null {
+/**
+ * Lists raster/SVG (and other non-PDF) media files for gallery or project cards.
+ * Prefers `NN.media.<ext>` files sorted by `NN`; falls back to `media.<ext>`.
+ */
+export function listMediaFilenames(itemDir: string): string[] {
   const files = fs.readdirSync(itemDir);
-  const hit = files.find((f) => MEDIA_RE.test(f) && f !== "manifest.json");
-  return hit ?? null;
+  const numbered = files
+    .filter((f) => NUMBERED_MEDIA_RE.test(f))
+    .sort((a, b) => {
+      const na = Number(/^(\d+)/.exec(a)?.[1] ?? 0);
+      const nb = Number(/^(\d+)/.exec(b)?.[1] ?? 0);
+      return na - nb;
+    });
+  if (numbered.length > 0) return numbered;
+  const legacy = files.find((f) => LEGACY_MEDIA_RE.test(f));
+  return legacy ? [legacy] : [];
+}
+
+function listPdfMediaFilenames(itemDir: string): string[] {
+  return listMediaFilenames(itemDir).filter((f) =>
+    f.toLowerCase().endsWith(".pdf"),
+  );
 }
 
 type GallerySourceRow = GalleryItem & { order: number; folder: string };
@@ -68,10 +96,12 @@ function publicPathForItem(section: PortfolioSection, folder: string): string {
 
 /**
  * Loads image-type items for a gallery section (drawings or photography).
- * Each folder under `public/content/portfolio/<section>/` should contain
- * `manifest.json` with `type: "image"` and a `media.*` file.
+ * Each folder should contain `manifest.json` with `type: "image"` and
+ * `NN.media.<ext>` files (or legacy `media.<ext>`).
  */
-export function loadGallerySection(section: PortfolioSection): GalleryItem[] {
+export function loadGallerySection(
+  section: "drawings" | "photography",
+): GalleryItem[] {
   const base = sectionDir(section);
   const folders = listItemDirs(section);
   const collected: GallerySourceRow[] = [];
@@ -86,15 +116,17 @@ export function loadGallerySection(section: PortfolioSection): GalleryItem[] {
     }
     if (manifest.type !== "image") continue;
 
-    const mediaName = findMediaFilename(itemDir);
-    if (!mediaName) {
+    const mediaNames = listMediaFilenames(itemDir).filter(
+      (f) => !f.toLowerCase().endsWith(".pdf"),
+    );
+    if (mediaNames.length === 0) {
       throw new Error(
-        `Gallery item "${section}/${folder}" is type image but has no media.* file`,
+        `Gallery item "${section}/${folder}" is type image but has no NN.media.<ext> or media.<ext> file`,
       );
     }
 
     const publicBase = publicPathForItem(section, folder);
-    const gi = imageManifestToGalleryItem(publicBase, mediaName, manifest);
+    const gi = imageManifestToGalleryItem(publicBase, mediaNames, manifest);
     collected.push({
       ...gi,
       folder,
@@ -104,8 +136,7 @@ export function loadGallerySection(section: PortfolioSection): GalleryItem[] {
 
   return sortByOrderAndFolder(collected).map(
     (row): GalleryItem => ({
-      src: row.src,
-      alt: row.alt,
+      images: row.images,
       caption: row.caption,
     }),
   );
@@ -155,20 +186,40 @@ function toIframeEmbed(
   };
 }
 
+function resolvePdfRelativePath(
+  section: PortfolioSection,
+  folder: string,
+  m: ParsedPdfManifest,
+  itemDir: string,
+): string {
+  if (m.filename) {
+    const abs = path.join(itemDir, m.filename);
+    if (!fs.existsSync(abs)) {
+      throw new Error(
+        `Portfolio "${section}/${folder}" (pdf): missing file "${m.filename}"`,
+      );
+    }
+    return m.filename;
+  }
+  const pdfs = listPdfMediaFilenames(itemDir);
+  if (pdfs.length === 0) {
+    throw new Error(
+      `Portfolio "${section}/${folder}" (pdf) needs a manifest "filename" or a NN.media.pdf / media.pdf`,
+    );
+  }
+  return pdfs[0];
+}
+
 function toPdfEmbed(
   section: PortfolioSection,
   folder: string,
   m: ParsedPdfManifest,
   itemDir: string,
 ): MusicEmbedItem {
-  const name = m.filename ?? findMediaFilename(itemDir);
-  if (
-    name === undefined ||
-    name === null ||
-    !name.toLowerCase().endsWith(".pdf")
-  ) {
+  const name = resolvePdfRelativePath(section, folder, m, itemDir);
+  if (!name.toLowerCase().endsWith(".pdf")) {
     throw new Error(
-      `Portfolio "${section}/${folder}" (pdf) needs media.pdf or a ".pdf" filename in manifest`,
+      `Portfolio "${section}/${folder}" (pdf): resolved file must end with .pdf`,
     );
   }
   const abs = path.join(itemDir, name);
@@ -210,5 +261,77 @@ export function loadMusicEmbeds(): MusicEmbedItem[] {
 
   return sortByOrderAndFolder(collected).map(
     ({ folder: _f, order: _o, ...item }): MusicEmbedItem => item,
+  );
+}
+
+function projectManifestToItem(
+  section: "open-source" | "software",
+  folder: string,
+  manifest: ParsedOpenSourceManifest | ParsedSoftwareManifest,
+  itemDir: string,
+): PortfolioProjectItem {
+  const imageMedia = listMediaFilenames(itemDir).filter(
+    (f) => !f.toLowerCase().endsWith(".pdf"),
+  );
+  if (imageMedia.length > 0) {
+    const alt = manifest.alt?.trim();
+    if (!alt) {
+      throw new Error(
+        `Portfolio "${section}/${folder}" has media files but manifest "alt" is missing or empty`,
+      );
+    }
+  }
+  const publicBase = publicPathForItem(section, folder);
+  const altBase = manifest.alt ?? "";
+  const images = imageMedia.map((name, i) => ({
+    src: `${publicBase}/${name}`,
+    alt:
+      imageMedia.length > 1
+        ? `${altBase} (${i + 1})`.trim() || `(${i + 1})`
+        : altBase,
+  }));
+
+  return {
+    folder,
+    title: manifest.title,
+    description: manifest.description,
+    links: manifest.links,
+    images,
+    imageCaption: manifest.caption,
+  };
+}
+
+type ProjectSourceRow = PortfolioProjectItem & { order: number };
+
+/**
+ * Loads open-source or proprietary software projects from disk.
+ */
+export function loadProjectSection(
+  section: "open-source" | "software",
+): PortfolioProjectItem[] {
+  const base = sectionDir(section);
+  const folders = listItemDirs(section);
+  const collected: ProjectSourceRow[] = [];
+  const expectedType = section === "open-source" ? "open-source" : "software";
+
+  for (const folder of folders) {
+    const itemDir = path.join(base, folder);
+    let manifest: ParsedPortfolioManifest;
+    try {
+      manifest = readManifestFile(itemDir);
+    } catch {
+      continue;
+    }
+    if (manifest.type !== expectedType) continue;
+
+    const item = projectManifestToItem(section, folder, manifest, itemDir);
+    collected.push({
+      ...item,
+      order: manifest.order ?? Number.MAX_SAFE_INTEGER,
+    });
+  }
+
+  return sortByOrderAndFolder(collected).map(
+    ({ order: _o, ...item }): PortfolioProjectItem => item,
   );
 }

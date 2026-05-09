@@ -1,0 +1,10 @@
+{
+  "type": "open-source",
+  "order": 3,
+  "title": "tamb.github.io",
+  "description": "This portfolio: Next.js static export for GitHub Pages.",
+  "links": [
+    { "label": "Repository", "href": "https://github.com/tamb/tamb.github.io" },
+    { "label": "Live site", "href": "https://tamb.github.io/" }
+  ]
+}

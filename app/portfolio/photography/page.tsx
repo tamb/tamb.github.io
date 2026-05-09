@@ -24,7 +24,10 @@ export default function PhotographyPage() {
             public/content/portfolio/photography/
           </code>
           , with WebP or JPEG recommended for{" "}
-          <code className="text-stone-800 dark:text-stone-300">media.*</code>.
+          <code className="text-stone-800 dark:text-stone-300">
+            NN.media.&lt;ext&gt;
+          </code>{" "}
+          files (multiple angles supported).
         </p>
       </header>
       <GalleryGrid items={items} />
