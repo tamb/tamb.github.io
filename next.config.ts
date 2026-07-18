@@ -6,6 +6,10 @@ const nextConfig: NextConfig = {
   images: {
     unoptimized: true,
   },
+  experimental: {
+    // TypeScript 7 has no JS compiler API; run project-local tsc instead.
+    useTypeScriptCli: true,
+  },
 };
 
 export default nextConfig;
